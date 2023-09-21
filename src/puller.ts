@@ -3,7 +3,7 @@ import getPrisma from '.';
 
 export default async function puller() {
     console.log('Puller started');
-    setInterval(pull, 1000000);
+    setInterval(pull, 1000 * 60);
     pull();
 }
 

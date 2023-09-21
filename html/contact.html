@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unfall</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+        body::before {
+            content: "";
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6d/Car_Crash_7-1-18_2245_(42450608354).jpg');
+            background-size: cover;
+            filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #000000;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .nav {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #000000;
+        }
+
+        .navMenu {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navTitle {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100%;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navTitleTop {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .navTitleTop a {
+            text-decoration: none;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navTitleBottom {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #ffffff;
+        }
+
+        .navTitleBottom a {
+            text-decoration: none;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navLinks {
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .navLinkList {
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
+            align-items: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navLinkItem {
+            margin: 0 0 0 1rem;
+            padding: 0;
+        }
+
+        .navLinkItem a {
+            text-decoration: none;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navLinkItem a:hover {
+            text-decoration: underline;
+        }
+
+        .navLinkItemCurrent {
+            margin: 0 0 0 1rem;
+            padding: 0;
+        }
+
+        .navLinkItemCurrent a {
+            text-decoration: none;
+            color: #b4b0b0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navLinkItemCurrent a:hover {
+            text-decoration: underline;
+        }
+
+        .main {
+            position: relative;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .mainContent {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333840;
+            margin: 1rem 0 1rem 0;
+        }
+
+        .content {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #333840;
+            margin: 1rem 0 1rem 0;
+        }
+
+        .content a {
+            text-decoration: none;
+            color: #000000;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 1200px) {
+            .navMenu {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .navTitle {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .navTitleTop {
+                font-size: 1rem;
+            }
+
+            .navTitleBottom {
+                font-size: 0.5rem;
+            }
+
+            .navLinks {
+                display: flex;
+                flex-direction: row;
+                justify-content: right;
+                align-items: center;
+            }
+
+            .navLinkList {
+                display: flex;
+                flex-direction: row;
+                justify-content: right;
+                align-items: center;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .navLinkItem {
+                margin: 0 0 0 1rem;
+                padding: 0;
+            }
+
+            .navLinkItem a {
+                text-decoration: none;
+                color: #ffffff;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .navLinkItem a:hover {
+                text-decoration: underline;
+            }
+
+            .navLinkItemCurrent {
+                margin: 0 0 0 1rem;
+                padding: 0;
+            }
+
+            .navLinkItemCurrent a {
+                text-decoration: none;
+                color: #b4b0b0;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .navLinkItemCurrent a:hover {
+                text-decoration: underline;
+            }
+
+        }
+
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav">
+            <div class="navMenu">
+                <div class="navTitle">
+                    <div class="navTitleTop">
+                        <a href="/">Unfall</a>
+                    </div>
+                    <div class="navTitleBottom">
+                        <a href="/">Counting BeatSaber Crash data since 21.09.2023</a>
+                    </div>
+                </div>
+                <div class="navLinks">
+                    <ul class="navLinkList">
+                        <li class="navLinkItem"><a href="/">Home</a></li>
+                        <li class="navLinkItem"><a href="/leaderboard">Leaderboard</a></li>
+                        <li class="navLinkItemCurrent"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="mainContent">
+            <div class="title">
+                Contact
+            </div>
+            <div class="content">
+                <p>
+                    If you have any questions, please contact me at <a href="mailto:hdgamer1404Jonas@gmail.com">hdgamer1404Jonas@gmail.com</a>.
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

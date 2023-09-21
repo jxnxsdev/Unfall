@@ -16,9 +16,18 @@ fastify.get('/', async (request, reply) => {
   return fs.createReadStream(path.join(__dirname, '../html/index.html'))
 })
 
+fastify.get('/leaderboard', async (request, reply) => {
+  reply.type('html').code(200)
+  return fs.createReadStream(path.join(__dirname, '../html/leaderboard.html'))
+})
+
+fastify.get('/contact', async (request, reply) => {
+  reply.type('html').code(200)
+  return fs.createReadStream(path.join(__dirname, '../html/contact.html'))
+})
+
 fastify.get('/api/get', async (request, reply) => {
     // get the crashes from the last 30 days
-    let prisma = await getPrisma();
     let crashes = await prisma.crashReports.findMany({
         where: {
             report_date: {
@@ -45,9 +54,41 @@ fastify.get('/api/get', async (request, reply) => {
     return crashData;
 })
 
+fastify.get('/api/getmostcrashedverions', async (request, reply) => {
+  // return an array with all versions and their crash count, for example: [{version: "1.13.2", crash_count: 10}]
+  let crashes = await prisma.crashReports.findMany();
+
+  // create a map with the version as key and the crash count as value
+  let versionMap = new Map<string, number>();
+
+  for (let crash of crashes) {
+      if (versionMap.has(crash.gameversion)) {
+          versionMap.set(crash.gameversion, versionMap.get(crash.gameversion) + 1);
+      } else {
+          versionMap.set(crash.gameversion, 1);
+      }
+  }
+
+  // create an array with all the versions and their crash count
+  let versionData = [];
+
+  for (let [key, value] of versionMap) {
+      let versionDataEntry = {
+          version: key,
+          crash_count: value
+      };
+
+      versionData.push(versionDataEntry);
+  }
+
+  reply.type('application/json').code(200);
+
+  return versionData;
+
+});
+
 fastify.get('/api/getusers', async (request, reply) => {
   // get the amount of crashes from the top 10 users
-  let prisma = await getPrisma();
   let users = await prisma.users.findMany({
       orderBy: {
           crash_count: 'desc'
@@ -74,7 +115,6 @@ fastify.get('/api/getusers', async (request, reply) => {
 
 fastify.get('/api/getallusers', async (request, reply) => {
   // get the users crash counts ordered by crash count
-  let prisma = await getPrisma();
   let users = await prisma.users.findMany({
       orderBy: {
           crash_count: 'desc'
