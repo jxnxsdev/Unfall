@@ -145,7 +145,7 @@ fastify.get('/api/getlastpull', async (request, reply) => {
   return lastPull;
 });
 
-fastify.listen({ port: 3000 }, (err, address) => {
+fastify.listen({ port: 3005 }, (err, address) => {
   if (err) throw err
   fastify.log.info(`server listening on ${address}`)
   
