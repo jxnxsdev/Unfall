@@ -9,8 +9,10 @@ datasource db {
 
 model CrashReports {
   crash_report_id       Int       @id @default(autoincrement())
+  id                    String    @db.Text
   username              String?   @db.Text
   report_date           DateTime? @db.DateTime(0)
+  gameversion           String    @db.Text
   additional_properties String?   @db.LongText
 }
 
