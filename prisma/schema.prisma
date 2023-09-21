@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model CrashReports {
+  crash_report_id       Int       @id @default(autoincrement())
+  username              String?   @db.Text
+  report_date           DateTime? @db.DateTime(0)
+  additional_properties String?   @db.LongText
+}
+
+model Users {
+  id          Int     @id @default(autoincrement())
+  username    String? @db.Text
+  crash_count Int?
+}
