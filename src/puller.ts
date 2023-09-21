@@ -3,8 +3,18 @@ import getPrisma from '.';
 
 export default async function puller() {
     console.log('Puller started');
-    setInterval(pull, 1000 * 60);
+    setInterval(pull, 1000 * 60 * 10);
     pull();
+}
+
+let lastPull: Date;
+
+export async function getLatestPull() {
+    if (!lastPull) {
+        lastPull = new Date();
+    }
+
+    return lastPull;
 }
 
 
@@ -76,4 +86,8 @@ async function pull() {
 
         console.log("Added crash " + crashId + " from user " + user + ". Index in array: " + crashes.indexOf(crash));
     }
+
+    lastPull = new Date();
+
+    console.log("Last pull: " + lastPull);
 }

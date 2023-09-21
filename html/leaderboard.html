@@ -7,6 +7,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <meta property="og:title" content="Unfall - Leaderboard">
+    <meta property="og:description" content="Unfall is holding statistics about BeatSaber crashes since 21.09.2023">
 
     <style>
         body::before {
@@ -208,6 +210,30 @@
             background-color: #dddddd;
         }
 
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #000000;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .footerText {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #ffffff;
+            text-align: center;
+            padding: 1rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
         @media screen and (max-width: 1200px) {
             .navMenu {
                 flex-direction: column;
@@ -321,9 +347,17 @@
         </div>
     </main>
 
+    <footer class="footer">
+        <div class="footerText" id="footer">
+            Last pull from the Analyzer: Loading...<br/>
+            © 2023 JNWH
+        </div>
+    </footer>
+
     <script>
         
         let link = "http://localhost:3000/api/getallusers";
+        let lastFetch = "http://localhost:3000/api/getlastpull";
 
         fetch(link)
             .then(response => response.json())
@@ -341,6 +375,21 @@
                     rank++;
                 });
             });
+
+            setInterval(fetchDate, 1000 * 60);
+            fetchDate();
+
+            function fetchDate() {
+                fetch(lastFetch)
+                    .then(response => response.json())
+                    .then(data => {
+                        let date = data.split('T')[0];
+                        let time = data.split('T')[1].split('.')[0];
+
+                        let footer = document.getElementById("footer");
+                        footer.innerHTML = "Last pull from the Analyzer: " + date + " " + time + "<br/>© 2023 JNWH";
+                    });
+            }
       
     </script>
 </body>

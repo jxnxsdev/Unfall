@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import puller from './puller';
 import { PrismaClient} from '@prisma/client';
-import { response } from 'express';
+import { getLatestPull } from './puller';
 
 let prisma: PrismaClient;
 
@@ -135,6 +135,14 @@ fastify.get('/api/getallusers', async (request, reply) => {
   reply.type('application/json').code(200);
 
   return userData;
+});
+
+fastify.get('/api/getlastpull', async (request, reply) => {
+  let lastPull = await getLatestPull();
+
+  reply.type('application/json').code(200);
+
+  return lastPull;
 });
 
 fastify.listen({ port: 3000 }, (err, address) => {
