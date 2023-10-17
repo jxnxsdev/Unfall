@@ -8,7 +8,7 @@ RUN apt-get update
 RUN apt-get install -y build-essential
 RUN npm install --build-from-source
 
-RUN npm install -g typescript@4.6.3
+RUN npm install -g typescript
 
 COPY . /usr/src/unfall
 
