@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unfall</title>
+    <title>Unfall - Statistics</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <meta property="og:title" content="Unfall">
+    <meta property="og:title" content="Unfall - Statistics">
     <meta property="og:description" content="Unfall is holding statistics about BeatSaber crashes since 21.09.2023">
 
     <style>
@@ -395,6 +395,7 @@
                         <li class="navLinkItemCurrent"><a href="/">Home</a></li>
                         <li class="navLinkItem"><a href="/leaderboard">Leaderboard</a></li>
                         <li class="navLinkItem"><a href="/contact">Contact</a></li>
+                        <li class="navLinkItem"><a href="https://github.com/hdgamer1404Jonas/Unfall">GitHub</a></li>
                     </ul>
                 </div>
             </div>
@@ -474,10 +475,10 @@
         var h_ctx = document.getElementById('24h').getContext('2d');
         var d_ctx = document.getElementById('30d').getContext('2d');
 
-        let lastThirty = "http://localhost:3000/api/get";
-        let versions = "http://localhost:3000/api/getmostcrashedverions";
-        let topten = "http://localhost:3000/api/getusers";
-        let lastFetch = "http://localhost:3000/api/getlastpull";
+        let lastThirty = "https://unfall.jnwh.tech/api/get";
+        let versions = "https://unfall.jnwh.tech/getmostcrashedverions";
+        let topten = "https://unfall.jnwh.tech/getusers";
+        let lastFetch = "https://unfall.jnwh.tech/api/getlastpull";
 
         // get the top 10 users
         fetch(topten)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unfall</title>
+    <title>Unfall - Leaderboard</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -356,8 +356,8 @@
 
     <script>
         
-        let link = "http://localhost:3000/api/getallusers";
-        let lastFetch = "http://localhost:3000/api/getlastpull";
+        let link = "https://unfall.jnwh.tech/api/getallusers";
+        let lastFetch = "https://unfall.jnwh.tech/api/getlastpull";
 
         fetch(link)
             .then(response => response.json())

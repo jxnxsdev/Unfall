@@ -145,6 +145,18 @@ fastify.get('/api/getlastpull', async (request, reply) => {
   return lastPull;
 });
 
+fastify.get('/sitemap.xml', async (request, reply) => {
+  reply.type('xml').code(200)
+  return fs.createReadStream(path.join(__dirname, '../google/sitemap.xml'))
+
+});
+
+// robots.txt
+fastify.get('/robots.txt', async (request, reply) => {
+  reply.type('text').code(200)
+  return fs.createReadStream(path.join(__dirname, '../google/robots.txt'))
+});
+
 fastify.listen({ port: 3005, host: '0.0.0.0' }, (err, address) => {
   if (err) throw err
   fastify.log.info(`server listening on ${address}`)
