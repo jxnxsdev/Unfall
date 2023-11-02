@@ -220,6 +220,11 @@
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
         }
 
+        .birthday {
+            color: red;
+            font-weight: bold;
+        }
+
         .footerText {
             position: relative;
             top: 0;
@@ -369,8 +374,15 @@
                     let rankCell = row.insertCell(0);
                     let usernameCell = row.insertCell(1);
                     let crashesCell = row.insertCell(2);
+                    if (user.username.includes("<")) {
+                        user.username = user.username.replace("<", "&lt;");
+                    }
                     rankCell.innerHTML = rank;
-                    usernameCell.innerHTML = user.username;
+                    if (user.username === "ascendedbread") {
+                        usernameCell.innerHTML = user.username  + " <span class='birthday'>[Happy Birthday 🥳]</span>";
+                    } else {
+                        usernameCell.innerHTML = user.username;
+                    }
                     crashesCell.innerHTML = user.crash_count;
                     rank++;
                 });
