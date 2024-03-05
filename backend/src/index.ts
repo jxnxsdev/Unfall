@@ -1,6 +1,7 @@
 import discord from 'discord.js';
 import { config } from 'dotenv';
 import * as cmdHandler from './handlers/commandHandler';
+import * as db from './modules/database';
 config();
 
 const client = new discord.Client({
@@ -15,6 +16,7 @@ const client = new discord.Client({
 client.on('ready', async () => {
     console.log('Bot is ready');
     await cmdHandler.registerCommands(client);
+    await db.connect();
 });
 
 client.on('interactionCreate', async interaction => {
