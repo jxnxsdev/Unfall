@@ -9,7 +9,7 @@ export async function start() {
     console.log("Initializing Unfall Data Puller...");
     setInterval(async () => {
         await pullData().catch(console.error);
-    }, 100000);
+    }, 1000 * 60 * 5);
     pullData().catch(console.error);
 }
 
@@ -24,8 +24,8 @@ async function pullData() {
         const [rows, fields] = await conn.query('SELECT * FROM crashes WHERE crash_id = ?', [crash.crashId]).catch(console.error);
         // @ts-ignore
         if (rows.length > 0) {
-            console.log("Crash already exists in database, skipping.");
-            continue;
+            console.log("Crash " + crash.crashId + " already exists in database, returning.");
+            return;
         }
 
         if (cache.current_pulls.includes(crash.crashId)) {
