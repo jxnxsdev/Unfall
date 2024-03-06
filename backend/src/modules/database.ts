@@ -53,7 +53,7 @@ export async function setup() {
             player_id TEXT,
             crash_time TEXT,
             version TEXT,
-            data TEXT
+            data LONGTEXT
         )`
     ];
     

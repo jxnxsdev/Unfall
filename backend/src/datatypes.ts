@@ -6,6 +6,13 @@ export type processed_crash = {
     data: string;
 }
 
+export type data = {
+    mods: string[];
+    header: string;
+    backtrace: string;
+    causes: string[];
+}
+
 export type player = {
     id: number;
     name: string;
