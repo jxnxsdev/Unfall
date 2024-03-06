@@ -37,10 +37,10 @@ export async function setup() {
             creator_id TEXT,
             url TEXT
         )`,
-        `CREATE TABLE IF NOT EXISTS crash_data (
+        `CREATE TABLE IF NOT EXISTS crash_causes (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            type TEXT,
-            data TEXT
+            cause TEXT,
+            crash_count INT
         )`,
         `CREATE TABLE IF NOT EXISTS players (
             id INT AUTO_INCREMENT PRIMARY KEY,
