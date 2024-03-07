@@ -41,6 +41,9 @@ async function pullData() {
         let uploadDate = crash.uploadDate;
         let gameVersion = crash.gameVersion || "Unknown";
 
+        uploadDate = uploadDate.replace("T", " ").replace("Z", "");
+        uploadDate = uploadDate.slice(0, uploadDate.indexOf("."));
+
         let log = await pull_log(crashID);
         let mods = log.mods || [];
         let header = log.header || "";

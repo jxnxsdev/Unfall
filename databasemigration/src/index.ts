@@ -27,8 +27,12 @@ async function migrate() {
     console.log("Old database size: " + dbSize);
 
     while (true) {
-        await add(current);
+        add(current);
         current++;
+        if (current > dbSize) {
+            break;
+        }
+        await new Promise(r => setTimeout(r, 5));
     }
 }
 
@@ -53,6 +57,7 @@ async function add(currentId: number) {
         const [rows_new, fields_new] = await conn.query('SELECT * FROM crashes WHERE crash_id = ?', [id]).catch(console.error);
         // @ts-ignore
         if (rows_new.length > 0) {
+            console.log("Processed crash " + id + " (" + currentId + "/" + dbSize + ")");
             return;
         }
 
@@ -61,7 +66,7 @@ async function add(currentId: number) {
         }
 
         // convert report_date from 2023-09-21 13:09:27 to 2024-03-07T17:15:28.605Z
-        let report_date_converted = new Date(report_date).toISOString();
+        let report_date_converted = report_date;
 
         let log = await pull_log(id);
         let mods = log.mods || [];

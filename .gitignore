@@ -9,3 +9,7 @@ backend/.env
 databasemigration/node_modules/
 databasemigration/build/
 databasemigration/.env
+
+frontend/node_modules/
+frontend/build/
+frontend/.env

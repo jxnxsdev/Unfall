@@ -51,7 +51,7 @@ export async function setup() {
             id INT AUTO_INCREMENT PRIMARY KEY,
             crash_id TEXT,
             player_id TEXT,
-            crash_time TEXT,
+            crash_time DATETIME,
             version TEXT,
             data LONGTEXT
         )`,

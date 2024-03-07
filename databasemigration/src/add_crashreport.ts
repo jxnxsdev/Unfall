@@ -15,7 +15,6 @@ export async function addCrashReport(crash: dataTypes.processed_crash) {
     }
 
     const causes = JSON.parse(data).causes;
-    console.log(causes);
 
     for (const cause of causes) {
         // @ts-ignore
