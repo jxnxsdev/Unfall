@@ -4,6 +4,7 @@ import { analyze_log } from './loganalyzer';
 import * as db from './database';
 import * as db_utils from '../utils/datautils';
 import * as dataTypes from '../datatypes';
+import * as websocket from './websocket';
 
 export async function start() {
     console.log("Initializing Unfall Data Puller...");
@@ -51,7 +52,6 @@ async function pullData() {
         let data: dataTypes.data = {
             mods: mods,
             header: header,
-            backtrace: backtrace,
             causes: cause
         };
 
@@ -65,9 +65,9 @@ async function pullData() {
 
         await db_utils.addCrashReport(processed_crash);
         cache.remove_pull(crashID);
+        await broadcast_crash(processed_crash).catch(console.error);
         console.log("Processed crash " + crashID);
     }
-
 }
 
 
@@ -88,4 +88,12 @@ async function pull_log(crash_id: string) {
         return { data: {} };
     });
     return res.data;
+}
+
+async function broadcast_crash(crash: dataTypes.processed_crash) {
+    let json = {
+        type: "crash",
+        data: crash
+    };
+    await websocket.broadcast(JSON.stringify(json));
 }

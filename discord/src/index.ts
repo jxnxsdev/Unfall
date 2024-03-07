@@ -2,9 +2,10 @@ import discord from 'discord.js';
 import { config } from 'dotenv';
 import * as cmdHandler from './handlers/commandHandler';
 import * as db from './modules/database';
+import * as websocket from './modules/websocket';
 config();
 
-const client = new discord.Client({
+export const client = new discord.Client({
     intents: [
         discord.GatewayIntentBits.Guilds,
         discord.GatewayIntentBits.GuildMessages,
@@ -17,6 +18,7 @@ client.on('ready', async () => {
     console.log('Bot is ready');
     await cmdHandler.registerCommands(client);
     await db.connect();
+    await websocket.connect();
 });
 
 client.on('interactionCreate', async interaction => {

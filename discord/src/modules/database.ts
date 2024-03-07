@@ -49,10 +49,11 @@ export async function setup() {
         )`,
         `CREATE TABLE IF NOT EXISTS crashes (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            player_id INT,
+            crash_id TEXT,
+            player_id TEXT,
             crash_time TEXT,
             version TEXT,
-            data TEXT
+            data LONGTEXT
         )`
     ];
     

@@ -3,7 +3,7 @@ import ws from 'ws';
 let server: ws.Server;
 
 export async function start() {
-    server = new ws.Server({ port: 8080 });
+    server = new ws.Server({ port: 1404 });
 }
 
 export async function broadcast(message: string) {
