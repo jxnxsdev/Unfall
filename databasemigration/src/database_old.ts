@@ -3,16 +3,14 @@ import mysql from 'mysql2/promise';
 let connection: mysql.Connection;
 
 export async function connect() {
-    const { DB_HOST, DB_USER, DB_PASS, DB_NAME } = process.env;
+    const { DB_HOST, DB_USER, DB_PASS } = process.env;
     
     connection = await mysql.createConnection({
         host: DB_HOST,
         user: DB_USER,
         password: DB_PASS,
-        database: DB_NAME
+        database: "unfall"
     });
-
-    await setup();
 }
 
 export async function checkConnection() {
@@ -54,11 +52,6 @@ export async function setup() {
             crash_time TEXT,
             version TEXT,
             data LONGTEXT
-        )`,
-        `CREATE TABLE IF NOT EXISTS version_crashes (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            version TEXT,
-            crash_count INT
         )`
     ];
     

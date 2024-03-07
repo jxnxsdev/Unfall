@@ -54,6 +54,11 @@ export async function setup() {
             crash_time TEXT,
             version TEXT,
             data LONGTEXT
+        )`,
+        `CREATE TABLE IF NOT EXISTS version_crashes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            version TEXT,
+            crash_count INT
         )`
     ];
     

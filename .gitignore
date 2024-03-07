@@ -5,3 +5,7 @@ discord/.env
 backend/node_modules/
 backend/build/
 backend/.env
+
+databasemigration/node_modules/
+databasemigration/build/
+databasemigration/.env

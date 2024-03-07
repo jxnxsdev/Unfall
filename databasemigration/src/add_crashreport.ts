@@ -1,5 +1,5 @@
-import * as dataTypes from '../datatypes';
-import * as db from '../modules/database';
+import * as dataTypes from './datatypes';
+import * as db from './database';
 
 export async function addCrashReport(crash: dataTypes.processed_crash) {
     const conn = await db.getConnection();
@@ -15,6 +15,7 @@ export async function addCrashReport(crash: dataTypes.processed_crash) {
     }
 
     const causes = JSON.parse(data).causes;
+    console.log(causes);
 
     for (const cause of causes) {
         // @ts-ignore
