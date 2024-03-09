@@ -30,7 +30,7 @@ export async function sendCrash(crash: types.processed_crash) {
     } else if (isCrashMod) {
         description = `**Looks like ${crash.player_id} was screwed over by crashmod**`;
     } else {
-        description += `\n\n**Coulprits:**\n${data.causes.join('\n')}`;
+        description += `\n\n**Culprits:**\n${data.causes.join('\n')}`;
     }
 
     const embed = new discord.EmbedBuilder()

@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import * as cmdHandler from './handlers/commandHandler';
 import * as db from './modules/database';
 import * as websocket from './modules/websocket';
+import { autocompleteHandler } from './handlers/autocompleteHandler';
 config();
 
 export const client = new discord.Client({
@@ -27,6 +28,15 @@ client.on('interactionCreate', async interaction => {
     cmdHandler.execute(interaction, client).catch((e) => {
         console.error(e);
         interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    });
+});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isAutocomplete()) return;
+
+    autocompleteHandler(interaction, client).catch((e) => {
+        console.error(e);
+        interaction.respond([{"name": "No options available", "value": "error"}]);
     });
 });
 
