@@ -4,8 +4,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unfall Currently Unavailable</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     Unfall is Currently undergoing a Recode. This involves migrating the entire database to a new structure. This will take a few days to complete. We apologize for the inconvenience.
+
+    Heres the data simplified and shitty displayed:
+
+
+    <table id="versions">
+        <thead>
+            <tr>
+                <th>Version</th>
+                <th>Crashes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <table id="causes">
+        <thead>
+            <tr>
+                <th>Cause</th>
+                <th>Crashes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    <table id="last24h">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Crashes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+
+    <table id="last30d">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Crashes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    <table id="players">
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Crahes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    
+    <script>
+        const baseURL = window.location.origin;
+        const frontpage = baseURL + '/api/frontpage';
+        const players = baseURL + '/api/players?amount=10';
+
+        async function loadData() {
+            const response = await fetch(frontpage);
+            const data = await response.json();
+            console.log(data);
+
+            const playersResponse = await fetch(players);
+            const playersData = await playersResponse.json();
+            console.log(playersData);
+
+            const last24h = data.last24h;
+            const last30d = data.last30d;
+            const versions = data.versions;
+            const causes = data.causes;
+
+            const playersTable = document.getElementById('players').querySelector('tbody');
+
+            for (const player of playersData) {
+                const tr = document.createElement('tr');
+                const tdPlayer = document.createElement('td');
+                const tdCrashes = document.createElement('td');
+
+                tdPlayer.innerText = player.name;
+                tdCrashes.innerText = player.crashes;
+
+                tr.appendChild(tdPlayer);
+                tr.appendChild(tdCrashes);
+
+                playersTable.appendChild(tr);
+            }
+
+           
+            const last24hTable = document.getElementById('last24h').querySelector('tbody');
+            for (const hour of last24h) {
+                const tr = document.createElement('tr');
+                const tdVersion = document.createElement('td');
+                const tdCrashes = document.createElement('td');
+
+                tdVersion.innerText = hour.hour;
+                tdCrashes.innerText = hour.crashes;
+
+                tr.appendChild(tdVersion);
+                tr.appendChild(tdCrashes);
+
+                last24hTable.appendChild(tr);
+            }
+
+            const last30dTable = document.getElementById('last30d').querySelector('tbody');
+            for (const day of last30d) {
+                const tr = document.createElement('tr');
+                const tdVersion = document.createElement('td');
+                const tdCrashes = document.createElement('td');
+
+                tdVersion.innerText = day.day;
+                tdCrashes.innerText = day.crashes;
+
+                tr.appendChild(tdVersion);
+                tr.appendChild(tdCrashes);
+
+                last30dTable.appendChild(tr);
+            }
+
+            const versionsTable = document.getElementById('versions').querySelector('tbody');
+            for (const version of versions) {
+                const tr = document.createElement('tr');
+                const tdVersion = document.createElement('td');
+                const tdCrashes = document.createElement('td');
+
+                tdVersion.innerText = version.version;
+                tdCrashes.innerText = version.crashes;
+
+                tr.appendChild(tdVersion);
+                tr.appendChild(tdCrashes);
+
+                versionsTable.appendChild(tr);
+            }
+
+            const causesTable = document.getElementById('causes').querySelector('tbody');
+            for (const cause of causes) {
+                const tr = document.createElement('tr');
+                const tdCause = document.createElement('td');
+                const tdCrashes = document.createElement('td');
+
+                tdCause.innerText = cause.cause;
+                tdCrashes.innerText = cause.crashes;
+
+                tr.appendChild(tdCause);
+                tr.appendChild(tdCrashes);
+
+                causesTable.appendChild(tr);
+            }
+
+
+
+
+        }
+
+        loadData();
+    </script>
 </body>
 </html>
