@@ -1,4 +1,5 @@
 import ws from 'ws';
+import { calculateData } from './datacollector';
 
 let client: ws;
 
@@ -29,6 +30,6 @@ async function handleMessage(message: string) {
     if (json.type === "crash") {
         let crash = json.data;
         console.log("Received crash " + crash.crash_id);
-        
+        await calculateData();
     }
 }

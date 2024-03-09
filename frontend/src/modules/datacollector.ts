@@ -1,63 +1,131 @@
-let last30d = [];
+export let last24h: any[] = [];
+export let last30d: any[] = [];
+export let verions: any[] = [];
+export let causes: any[] = [];
+export let players: any[] = [];
 
-import * as db from './database';
+import { PrismaClient } from '@prisma/client'
 
 export async function calculateData() {
-    console.log(await calculate24h());
+    last24h = await calculate24h();
+    last30d = await calculate30d();
+    verions = await calculateVersions();
+    causes = await calculateCauses();
+    players = await calculatePlayers();
 }
 
 
 async function calculate24h() {
-    const conn = await db.getConnection();
-    // @ts-ignore
+    const prisma = new PrismaClient();
 
-    // Get current time in ISO 8601 format
-    const currentTime = new Date().toISOString();
+    let crashesPerHour = [];
 
-    // Calculate the time 24 hours ago in ISO 8601 format
-    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-
-    // Query to get the count of crashes for each hour in the last 24 hours
-    const query = `
-        SELECT 
-            DATE_FORMAT(crash_time, '%Y-%m-%d %H:00:00') AS hour, 
-            COUNT(*) AS crash_count
-        FROM 
-            crashes
-        WHERE 
-            crash_time >= '${twentyFourHoursAgo}' AND
-            crash_time <= '${currentTime}'
-        GROUP BY 
-            hour
-        ORDER BY 
-            hour;
-    `;
-
-    // Execute the query
-    const result = await conn.query(query);
-
-    // Initialize an array to store results for the last 24 hours
-    const last24h: { hour: string, crash_count: number }[] = [];
-
-    // Initialize an object to store counts for each hour
-    const counts: { [hour: string]: number } = {};
-
-    // Fill the counts object with crash counts from the result
-    result.forEach((row: any) => {
-        counts[row.hour] = row.crash_count;
+    let crahes = await prisma.crashes.findMany({
+        where: {
+            crash_time: {
+                gte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+            }
+        }
     });
 
-    // Fill the last24h array with 0s for each hour if there are no crashes recorded
-    const currentHour = new Date().getUTCHours();
     for (let i = 0; i < 24; i++) {
-        const hour = new Date(Date.now() - (currentHour - i) * 60 * 60 * 1000).toISOString().slice(0, 13) + ':00:00';
-        const crash_count = counts[hour] || 0;
-        last24h.push({ hour, crash_count });
+        let json = {"hour": i, "crashes": 0};
+        // hours go into the past, meaning 0 is the current hour, 23 is 24 hours ago
+        let date = new Date(Date.now() - i * 60 * 60 * 1000);
+        for (let crash of crahes) {
+            if (crash.crash_time.getHours() === date.getHours()) {
+                json.crashes++;
+            }
+        }
+        crashesPerHour.push(json);
     }
 
-    // Return the array with crash counts for the last 24 hours
-    return last24h;
+    prisma.$disconnect();
+
+    return crashesPerHour;
 }
 
+async function calculate30d() {
+    const prisma = new PrismaClient();
 
+    let crashesPerDay = [];
 
+    let crahes = await prisma.crashes.findMany({
+        where: {
+            crash_time: {
+                gte: new Date(Date.now() - 31 * 24 * 60 * 60 * 1000)
+            }
+        }
+    });
+
+    for (let i = 0; i < 31; i++) {
+        let json = {"day": i, "crashes": 0};
+        // days go into the past, meaning 0 is the current day, 29 is 30 days ago
+        let date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+        for (let crash of crahes) {
+            if (crash.crash_time.getDate() === date.getDate()) {
+                json.crashes++;
+            }
+        }
+        crashesPerDay.push(json);
+    }
+
+    prisma.$disconnect();
+
+    return crashesPerDay;
+}
+
+async function calculateVersions() {
+    const prisma = new PrismaClient();
+
+    let db_versions = await prisma.version_crashes.findMany();
+
+    let version_json = [];
+
+    for (let version of db_versions) {
+        let json = {"version": version.version, "crashes": version.crash_count};
+        version_json.push(json);
+    }
+
+    prisma.$disconnect();
+
+    return version_json;
+}
+
+async function calculateCauses() {
+    const prisma = new PrismaClient();
+
+    let db_causes = await prisma.crash_causes.findMany();
+
+    let causes_json = [];
+
+    for (let cause of db_causes) {
+        let json = {"cause": cause.cause, "crashes": cause.crash_count};
+        causes_json.push(json);
+    }
+
+    prisma.$disconnect();
+
+    return causes_json;
+}
+
+async function calculatePlayers() {
+    const prisma = new PrismaClient();
+
+    let db_players = await prisma.players.findMany({
+        orderBy: {
+            crash_count: 'desc'
+        }
+    });
+
+    let players_json = [];
+
+    for (let player of db_players) {
+        let json = {"name": player.name, "crashes": player.crash_count};
+        players_json.push(json);
+    }
+
+    prisma.$disconnect();
+
+    return players_json;
+}

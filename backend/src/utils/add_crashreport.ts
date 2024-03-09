@@ -17,6 +17,8 @@ export async function addCrashReport(crash: dataTypes.processed_crash) {
     const causes = JSON.parse(data).causes;
 
     for (const cause of causes) {
+        if (cause === "") continue;
+        if (!cause.toLowerCase().startsWith("lib")) continue;
         // @ts-ignore
         const [rows, fields] = await conn.query('SELECT * FROM crash_causes WHERE cause = ?', [cause]).catch(console.error);
         // @ts-ignore

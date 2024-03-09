@@ -1,5 +1,6 @@
 import express from 'express';
 import { frontEndData } from './frontpage';
+import { playersData } from './players';
 
 
 export async function handleApi(request: express.Request, response: express.Response) {
@@ -12,6 +13,14 @@ export async function handleApi(request: express.Request, response: express.Resp
 
         case "frontpage": {
             await frontEndData(request, response).catch((e) => {
+                console.error(e);
+                response.status(500).send("Internal server error");
+            });
+            break;
+        }
+
+        case "players": {
+            await playersData(request, response).catch((e) => {
                 console.error(e);
                 response.status(500).send("Internal server error");
             });

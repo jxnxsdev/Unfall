@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model crash_causes {
+  id          Int     @id @default(autoincrement())
+  cause       String? @db.Text
+  crash_count Int?
+}
+
+model crashes {
+  id         Int       @id @default(autoincrement())
+  crash_id   String?   @db.Text
+  player_id  String?   @db.Text
+  crash_time DateTime? @db.DateTime(0)
+  version    String?   @db.Text
+  data       String?   @db.LongText
+}
+
+model players {
+  id          Int     @id @default(autoincrement())
+  name        String? @db.Text
+  crash_count Int?
+}
+
+model version_crashes {
+  id          Int     @id @default(autoincrement())
+  version     String? @db.Text
+  crash_count Int?
+}
+
+model webhooks {
+  id         Int     @id @default(autoincrement())
+  creator_id String? @db.Text
+  url        String? @db.Text
+}
