@@ -1,0 +1,20 @@
+# build and start the docker files in ./frontend, ./backend, and ./discord
+# forward the port 1404 from the backend onto the host machine and the port 3005 from the frontend onto the host machine
+# the backend will be available at localhost:1404 and the frontend will be available at localhost:3005
+# make all containers restart unless-stopped
+
+version: '3.7'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3005:3005"
+    restart: unless-stopped
+  backend:
+    build: ./backend
+    ports:
+      - "1404:1404"
+    restart: unless-stopped
+  discord:
+    build: ./discord
+    restart: unless-stopped

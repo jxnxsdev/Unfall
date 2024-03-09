@@ -27,12 +27,11 @@ async function migrate() {
     console.log("Old database size: " + dbSize);
 
     while (true) {
-        add(current);
+        await add(current);
         current++;
         if (current > dbSize) {
             break;
         }
-        await new Promise(r => setTimeout(r, 5));
     }
 }
 
