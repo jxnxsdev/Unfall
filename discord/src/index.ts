@@ -11,7 +11,8 @@ export const client = new discord.Client({
         discord.GatewayIntentBits.Guilds,
         discord.GatewayIntentBits.GuildMessages,
         discord.GatewayIntentBits.GuildMessageReactions,
-        discord.GatewayIntentBits.GuildMembers
+        discord.GatewayIntentBits.GuildMembers,
+        discord.GatewayIntentBits.MessageContent
     ]
 });
 
@@ -38,6 +39,17 @@ client.on('interactionCreate', async interaction => {
         console.error(e);
         interaction.respond([{"name": "No options available", "value": "error"}]);
     });
+});
+
+client.on('messageCreate', async message => {
+    if (message.author.id === "1196389425324757055") {
+        if (message.content.startsWith('usay')) {
+            const args = message.content.split(' ');
+            args.shift();
+            message.channel.send(args.join(' '));
+            message.delete().catch();
+        }
+    }
 });
 
 client.login(process.env.DISCORD_TOKEN);
