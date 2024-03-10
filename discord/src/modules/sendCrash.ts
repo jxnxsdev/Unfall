@@ -14,6 +14,8 @@ export async function sendCrash(crash: types.processed_crash) {
     const time = new Date(crash.crash_time);
     const unix = Math.floor(time.getTime() / 1000);
 
+    let setLiveness = false;
+
     let description = `
         **Player ID:** ${crash.player_id}
         **Crash Time:** <t:${unix}:R>
@@ -25,6 +27,7 @@ export async function sendCrash(crash: types.processed_crash) {
 
     if (isLiveness) {
         description = "# LIVENESS CRASH\n\n" + description;
+        setLiveness = true;
     } else if (isHook) {
         description = "# HOOK CRASH\n\n" + description;
     } else if (isCrashMod) {
@@ -38,6 +41,10 @@ export async function sendCrash(crash: types.processed_crash) {
         .setDescription(description)
         .setColor("#FF0000")
         .setURL(`https://analyzer.questmodding.com/crashes/${crash.crash_id}`);
+
+    if (setLiveness) {
+        embed.setImage("https://media1.tenor.com/m/BQZ29NJpFvIAAAAC/eat-red-candle-lightsaber-red-candle.gif");
+    }
 
     if (isCrashMod) {
         embed.setImage("https://media1.tenor.com/m/9ccpdUqcvXIAAAAC/iu.gif");
