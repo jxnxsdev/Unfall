@@ -24,9 +24,9 @@ export async function sendCrash(crash: types.processed_crash) {
     `;
 
     if (isLiveness) {
-        description = "**LIVENESS CRASH**\n\n" + description;
+        description = "# LIVENESS CRASH\n\n" + description;
     } else if (isHook) {
-        description = "**HOOK CRASH**\n\n" + description;
+        description = "# HOOK CRASH\n\n" + description;
     } else if (isCrashMod) {
         description = `**Looks like ${crash.player_id} was screwed over by crashmod**`;
     } else {
