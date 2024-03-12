@@ -6,7 +6,7 @@ export async function addCrashReport(crash: dataTypes.processed_crash) {
     const { crash_id, player_id, crash_time, version, data } = crash;
     await conn.query('INSERT INTO crashes (crash_id, player_id, crash_time, version, data) VALUES (?, ?, ?, ?, ?)', [crash_id, player_id, crash_time, version, data]).catch(console.error);
     // @ts-ignore
-    const [rows, fields] = await conn.query('SELECT * FROM players WHERE name = ?', [player_id]).catch(console.error);
+    const [rows, fields] = await conn.query('SELECT * FROM players WHERE name LIKE BINARY ?', [player_id]).catch(console.error);
     // @ts-ignore
     if (rows.length === 0) {
         await conn.query('INSERT INTO players (name, crash_count) VALUES (?, ?)', [player_id, 1]).catch(console.error);
