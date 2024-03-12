@@ -22,7 +22,7 @@ async function pullData() {
     for (const crash of crashes) {
         const conn = await db.getConnection();
         // @ts-ignore
-        const [rows, fields] = await conn.query('SELECT * FROM crashes WHERE crash_id = ?', [crash.crashId]).catch(console.error);
+        const [rows, fields] = await conn.query('SELECT * FROM crashes WHERE crash_id LIKE BINARY ?', [crash.crashId]).catch(console.error);
         // @ts-ignore
         if (rows.length > 0) {
             console.log("Crash " + crash.crashId + " already exists in database, returning.");
